@@ -28,7 +28,7 @@ export default function TodoList({data, dispatch}) {
 
 function Todo({toDo, dispatch}) {
 
-  const [userInput, setUserInput] = useState('');
+  const [userInput, setUserInput] = useState(toDo.task);
 
   const handleChange = (e) => {
     setUserInput(e.target.value);
@@ -47,7 +47,7 @@ function Todo({toDo, dispatch}) {
   else {
     return (
       <form onSubmit={() => dispatch({type: ACTION.SAVE, payload: [toDo, userInput]})}>
-        <input placeholder={toDo.task} type="text" onChange={handleChange} />
+        <input value={userInput} type="text" onChange={handleChange} />
         <button>Save</button>
       </form>
     );

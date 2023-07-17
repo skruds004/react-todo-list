@@ -2,7 +2,7 @@ import React, { useReducer, useState } from "react";
 import TodoList, {ACTION as ACTION} from "./components/TodoList";
 
 //used to make new ids
-let count = 1;
+let count = 0;
 
 function reducer(state, action) {
   switch (action.type) {
@@ -64,14 +64,7 @@ function reducer(state, action) {
 
 function App() {
 
-  const new_data = [{
-    id: 1,
-    checked: true,
-    task: "Make a big stack of pancakes",
-    editing: false
-  }];
-
-  const [data, dispatch] = useReducer(reducer, new_data);
+  const [data, dispatch] = useReducer(reducer, []);
   const [userInput, setUserInput] = useState('');
 
   const handleChange = (e) => {
