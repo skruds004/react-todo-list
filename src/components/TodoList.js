@@ -6,17 +6,18 @@ export const ACTION = {
   NEW_USER_INPUT: "newUserInput",
   DELETE: "delete",
   CHECK: "check",
-  SAVE: "save"
+  SAVE: "save",
+  //CHANGE: "change"
 }
 
-export default function TodoList({data, dispatch}) {
+export default function TodoList({data, dispatch}) {  
 
-  
   return (
         <ul className="TodoList">
           {data.map(toDo => {
             return (
               <Todo
+                key={toDo.id}
                 toDo={toDo}
                 dispatch={dispatch}
               />
@@ -46,10 +47,12 @@ function Todo({toDo, dispatch}) {
   }
   else {
     return (
-      <form onSubmit={() => dispatch({type: ACTION.SAVE, payload: [toDo, userInput]})}>
-        <input value={userInput} type="text" onChange={handleChange} />
-        <button>Save</button>
-      </form>
+      <li>
+        <form onSubmit={() => dispatch({type: ACTION.SAVE, payload: [toDo, userInput]})}>
+          <input value={userInput} type="text" onChange={handleChange} />
+          <button type="submit">Save</button>
+        </form>
+      </li>
     );
   }
 }

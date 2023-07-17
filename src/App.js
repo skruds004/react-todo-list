@@ -1,8 +1,5 @@
 import React, { useReducer, useState } from "react";
-import TodoList, {ACTION as ACTION} from "./components/TodoList";
-
-//used to make new ids
-let count = 0;
+import TodoList, {ACTION} from "./components/TodoList";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -17,25 +14,36 @@ function reducer(state, action) {
       toDosCopy.splice(index, 1, toDoCopy);
       return toDosCopy;
     }
+    // case ACTION.CHANGE:
+    // {
+    //   const index = state.findIndex(toDo => toDo.id === action.payload[0].id);
+    //   const toDoCopy = {
+    //     ...state[index],
+    //     task: action.payload[1]
+    //   }
+    //   const toDosCopy = state.slice();
+    //   toDosCopy.splice(index, 1, toDoCopy);
+    //   return toDosCopy;
+    // }
     case ACTION.SAVE:
-      {
-        const index = state.findIndex(toDo => toDo.id === action.payload[0].id);
-        const toDoCopy = {
-          ...state[index],
-          task: action.payload[1],
-          editing: !state[index].editing
-        }
-        const toDosCopy = state.slice();
-        toDosCopy.splice(index, 1, toDoCopy);
-        return toDosCopy;
+    {
+      const index = state.findIndex(toDo => toDo.id === action.payload[0].id);
+      const toDoCopy = {
+        ...state[index],
+        task: action.payload[1],
+        editing: !state[index].editing
       }
+      const toDosCopy = state.slice();
+      toDosCopy.splice(index, 1, toDoCopy);
+      return toDosCopy;
+    }
     case ACTION.NEW_USER_INPUT:
     {
-      count++;
       return [{
-        id: count,
+        id: action.payload[1],
         checked: false,
-        task: action.payload
+        task: action.payload[0],
+        editing: false
       }, ...state];
     }
     case ACTION.DELETE:
@@ -66,6 +74,7 @@ function App() {
 
   const [data, dispatch] = useReducer(reducer, []);
   const [userInput, setUserInput] = useState('');
+  const [count, setCount] = useState(0);
 
   const handleChange = (e) => {
     setUserInput(e.target.value);
@@ -73,7 +82,8 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch({type: ACTION.NEW_USER_INPUT, payload: userInput});
+    setCount(count + 1);
+    dispatch({type: ACTION.NEW_USER_INPUT, payload: [userInput, count]});
     setUserInput('');
   }
 
